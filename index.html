@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Real Cover Digital Reading Journal</title>
+    <!-- Tailwind CSS untuk tampilan instan -->
+    <script src="https://tailwindcss.com"></script>
+    <style>
+        @import url('https://googleapis.com');
+        .font-mono-journal { font-family: 'Courier Prime', monospace; }
+        .font-serif-journal { font-family: 'Playfair Display', serif; }
+    </style>
+</head>
+<body class="bg-[#F9F8F6] text-[#2C2A29] py-6 px-4 font-mono-journal antialiased">
+
+    <!-- ==================================================== -->
+    <!-- FITUR UTAMA: FORMULIR INPUT NOVEL DENGAN WARNA ASLI  -->
+    <!-- ==================================================== -->
+    <div class="max-w-3xl mx-auto bg-[#F2EFE9] border border-[#DCD7CD] rounded-xl p-6 shadow-sm mb-10">
+        <h2 class="text-lg font-bold font-serif-journal italic mb-4 flex items-center gap-2">✨ Tambah Koleksi Novel Baru</h2>
+        
+        <form id="bookForm" class="space-y-4 text-xs font-sans">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-bold text-gray-600 mb-1">Judul Novel:</label>
+                    <input type="text" id="bookTitle" required placeholder="Contoh: Laut Bercerita" class="w-full p-2.5 bg-white border border-[#DCD7CD] rounded-lg focus:outline-none focus:border-[#E8A87C]">
+                </div>
+                <div>
+                    <label class="block font-bold text-gray-600 mb-1">Nama Penulis:</label>
+                    <input type="text" id="bookAuthor" required placeholder="Contoh: Leila S. Chudori" class="w-full p-2.5 bg-white border border-[#DCD7CD] rounded-lg focus:outline-none focus:border-[#E8A87C]">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-bold text-gray-600 mb-1">Link Gambar Sampul Asli (Opsional):</label>
+                    <input type="url" id="bookImgUrl" placeholder="https://example.com" class="w-full p-2.5 bg-white border border-[#DCD7CD] rounded-lg focus:outline-none focus:border-[#E8A87C]">
+                </div>
+                <div>
+                    <label class="block font-bold text-gray-600 mb-1">Pencocokan Warna Buku Asli (Fallback):</label>
+                    <select id="bookColor" class="w-full p-2.5 bg-white border border-[#DCD7CD] rounded-lg focus:outline-none focus:border-[#E8A87C]">
+                        <option value="from-slate-900 to-black">Hitam & Biru Pekat (Ala The Naturals)</option>
+                        <option value="from-red-800 to-rose-950">Merah Tua Gelap (Ala Laut Bercerita)</option>
+                        <option value="from-amber-800 to-yellow-950">Cokelat Tembakau Emas (Ala Gadis Kretek)</option>
+                        <option value="from-purple-800 to-indigo-950">Ungu Misteri (Ala Killer Instinct)</option>
+                        <option value="from-emerald-800 to-teal-950">Hijau Emerald Gelap (Ala All In)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-bold text-gray-600 mb-1">Rating Bintang (1 - 5):</label>
+                    <select id="bookRating" class="w-full p-2.5 bg-white border border-[#DCD7CD] rounded-lg focus:outline-none focus:border-[#E8A87C]">
+                        <option value="5">⭐⭐⭐⭐⭐ (Sempurna)</option>
+                        <option value="4">⭐⭐⭐⭐ (Suka Banget)</option>
+                        <option value="3">⭐⭐⭐ (Biasa Saja)</option>
+                        <option value="2">⭐⭐ (Kurang Suka)</option>
+                        <option value="1">⭐ (Buruk)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-bold text-gray-600 mb-1">Status Membaca:</label>
+                    <select id="bookStatus" class="w-full p-2.5 bg-white border border-[#DCD7CD] rounded-lg focus:outline-none focus:border-[#E8A87C]">
+                        <option value="Selesai">Selesai Dibaca</option>
+                        <option value="Membaca">Sedang Dibaca</option>
+                        <option value="TBR List">Daftar Keinginan (TBR)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <label class="block font-bold text-gray-600 mb-1">Catatan Ulasan Singkat (Review):</label>
+                <textarea id="bookReview" rows="2" placeholder="Tulis opini jujur kamu tentang novel ini..." class="w-full p-2.5 bg-white border border-[#DCD7CD] rounded-lg focus:outline-none focus:border-[#E8A87C] font-mono-journal text-xs"></textarea>
+            </div>
+
+            <button type="submit" class="w-full py-2.5 bg-[#E8A87C] text-white font-bold rounded-lg hover:bg-[#d99668] transition-colors shadow-sm tracking-wider uppercase">
+                📥 Simpan ke Rak Buku Digital
+            </button>
+        </form>
+    </div>
+
+    <!-- ==================================================== -->
+    <!-- BAGIAN 1: DETAIL TAMPILAN JURNAL TERBARU             -->
+    <!-- ==================================================== -->
+    <div id="journalDetailContainer" class="max-w-3xl mx-auto bg-white border border-[#E4E2DF] rounded-xl shadow-sm p-6 md:p-12 relative overflow-hidden mb-10">
+        <div class="absolute top-4 right-[-35px] bg-[#E8A87C] text-white text-[10px] font-bold py-1 px-10 transform rotate-45 opacity-80 font-sans shadow-sm">READING 🎉</div>
+        <div class="border-b-2 border-[#2C2A29] pb-4 mb-6 flex justify-between items-end">
+            <h1 class="text-3xl font-bold font-serif-journal italic text-[#1A1A1A]">Active Review</h1>
+            <span class="text-[10px] text-gray-400 font-sans tracking-widest">DIGITAL JOURNAL</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div class="flex flex-col items-center md:items-start">
+                <!-- Cover Interaktif dengan gambar atau warna -->
+                <div id="activeCover" class="w-40 h-56 rounded-md shadow-md flex flex-col justify-between p-3 text-white border border-neutral-800 bg-cover bg-center overflow-hidden bg-gradient-to-br from-slate-900 to-black">
+                    <div id="activeFallbackContent" class="h-full flex flex-col justify-between w-full">
+                        <div class="text-[9px] uppercase tracking-widest text-slate-400 font-sans">Novel</div>
+                        <div id="activeTitle" class="font-serif-journal font-bold text-base leading-tight my-auto tracking-wide">THE NATURALS</div>
+                        <div id="activeAuthor" class="text-[10px] text-slate-400 font-sans truncate">Jennifer L. Barnes</div>
+                    </div>
+                </div>
+                <div id="activeStars" class="mt-3 flex gap-0.5 text-amber-500 text-lg">★★★★★</div>
+            </div>
+            <div class="md:col-span-2 space-y-2.5 text-sm">
+                <div class="border-b border-gray-100 pb-1.5 flex"><span class="font-bold w-32 shrink-0">Title:</span> <span id="infoTitle" class="font-serif-journal italic font-semibold text-[#1A1A1A]">The Naturals</span></div>
+                <div class="border-b border-gray-100 pb-1.5 flex"><span class="font-bold w-32 shrink-0">Author:</span> <span id="infoAuthor">Jennifer Lynn Barnes</span></div>
+                <div class="border-b border-gray-100 pb-1.5 flex"><span class="font-bold w-32 shrink-0">Status:</span> <span id="infoStatus" class="bg-neutral-100 text-neutral-800 px-2 py-0.5 rounded text-xs font-bold">Selesai</span></div>
+            </div>
+        </div>
+        <div>
+            <h3 class="font-bold text-xs uppercase tracking-wider text-gray-400 mb-1.5 font-sans border-b border-gray-100 pb-1">Book Review / Notes:</h3>
+            <p id="infoReview" class="text-xs leading-relaxed text-gray-700 whitespace-pre-line font-serif-journal italic">
+                This book min is much better than i thought it was going to be. i was hesitant because it's YA & i didn't know how i would feel about teenagers working in the FBI, but now i love it. This is 100% like a YA version of Criminal Minds.
+            </p>
+        </div>
+    </div>
+
+    <!-- Pembatas Indeks Rak -->
+    <div class="max-w-3xl mx-auto border-t-2 border-dashed border-[#E4E2DF] my-10 pt-4">
+        <h2 class="text-xl font-bold font-serif-journal italic text-center mb-6">📚 My Visual Bookshelf Grid</h2>
+    </div>
+
+    <!-- ==================================================== -->
+    <!-- BAGIAN 2: RAK BUKU INDEKS GRID (MENIRU GAMBAR 2)     -->
+    <!-- ==================================================== -->
+    <div id="bookshelfGrid" class="max-w-3xl mx-auto grid grid-cols-2 sm:grid-cols-3 gap-6 px-2">
+        <!-- Buku bawaan awal -->
+        <div class="bg-white border border-[#E4E2DF] rounded-xl p-4 shadow-sm text-center flex flex-col justify-between cursor-pointer" onclick="viewBook('The Naturals', 'Jennifer Lynn Barnes', 'from-slate-900 to-black', 5, 'Selesai', 'This book min is much better than i thought it was going to be. i was hesitant because it\'s YA & i didn\'t know how i would feel about teenagers working in the FBI, but now i love it. This is 100% like a YA version of Criminal Minds.', '')">
+            <div class="w-full h-48 bg-gradient-to-br from-slate-900 to-black rounded-md shadow-sm mb-3 flex flex-col justify-between p-2 text-white bg-cover bg-center">
+                <span class="text-[8px] text-left opacity-60">Novel</span>
+                <span class="font-serif-journal text-xs font-bold">The Naturals</span>
+
+J.L. Barnes
+
+★★★★★
+Selesai
+
+Dibuat dengan ❤️ langsung lewat HP untuk Jurnal Baca Estetik
+const form = document.getElementById('bookForm');
+const grid = document.getElementById('bookshelfGrid');
+form.addEventListener('submit', function(e) {
+e.preventDefault();
+const title = document.getElementById('bookTitle').value;
+const author = document.getElementById('bookAuthor').value;
+const color = document.getElementById('bookColor').value;
+const imgUrl = document.getElementById('bookImgUrl').value;
+const rating = parseInt(document.getElementById('bookRating').value);
+const status = document.getElementById('bookStatus').value;
+const review = document.getElementById('bookReview').value || 'Belum ada ulasan catatan.';
+const newCard = document.createElement('div');
+newCard.className = "bg-white border border-[#E4E2DF] rounded-xl p-4 shadow-sm text-center flex flex-col justify-between cursor-pointer";
+newCard.onclick = function() {
+viewBook(title, author, color, rating, status, review, imgUrl);
+};
+let cardStyle = background-image: url('${imgUrl}');
+let textOverlay = imgUrl ? 'hidden' : '';
+newCard.innerHTML = <div class="w-full h-48 bg-gradient-to-br ${color} rounded-md shadow-sm mb-3 flex flex-col justify-between p-2 text-white bg-cover bg-center" style="${imgUrl ? cardStyle : ''}"> <div class="${textOverlay} h-full flex flex-col justify-between w-full"> <span class="text-[8px] text-left opacity-60">Novel</span> <span class="font-serif-journal text-xs font-bold text-center">${title}</span> <span class="text-[8px] text-right opacity-60 truncate">${author}</span> </div> </div> <div class="text-amber-500 text-xs mb-1">${'★'.repeat(rating)}</div> <div class="text-[10px] ${status === 'Membaca' ? 'text-emerald-600' : status === 'TBR List' ? 'text-amber-600' : 'text-gray-400'} font-sans font-semibold">${status}</div>;
+grid.insertBefore(newCard, grid.firstChild);
+viewBook(title, author, color, rating, status, review, imgUrl);
+form.reset();
+});
+function viewBook(title, author, color, rating, status, review, imgUrl) {
+document.getElementById('activeTitle').innerText = title.toUpperCase();
+document.getElementById('activeAuthor').innerText = author;
+document.getElementById('infoTitle').innerText = title;
+document.getElementById('infoAuthor').innerText = author;
+document.getElementById('infoStatus').innerText = status;
+document.getElementById('infoReview').innerText = review;
+document.getElementById('activeStars').innerText = '★'.repeat(rating);
+const coverDiv = document.getElementById('activeCover');
+const fallbackContent = document.getElementById('activeFallbackContent');
+if(imgUrl) {
+coverDiv.style.backgroundImage = url('${imgUrl}');
+fallbackContent.classList.add('hidden');
+} else {
+coverDiv.style.backgroundImage = '';
+coverDiv.className = w-40 h-56 bg-gradient-to-br ${color} rounded-md shadow-md flex flex-col justify-between p-3 text-white border border-neutral-800 bg-cover bg-center overflow-hidden;
+fallbackContent.classList.remove('hidden');
+}
+}
+
+
+
+<Fol
+
+
